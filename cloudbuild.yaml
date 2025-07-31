@@ -1,0 +1,7 @@
+steps:
+  # Your existing build steps
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/llms-and-rag-project/github.com/lewis-hue/qubiten-chatbot:$COMMIT_SHA$SHORT_SHA', '.']
+
+options:
+  logging: CLOUD_LOGGING_ONLY # Add this line
