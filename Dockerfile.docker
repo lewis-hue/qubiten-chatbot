@@ -1,0 +1,21 @@
+# Build stage
+FROM node:20-slim AS build
+WORKDIR /usr/src/app
+
+# Copy the package files and install dependencies
+COPY package*.json ./
+RUN npm install
+
+# Copy the rest of the application files and build the app
+COPY . .
+RUN npm run build
+
+# Production stage: use Nginx to serve the built React app
+FROM nginx:alpine
+COPY --from=build /usr/src/app/dist /usr/share/nginx/html
+
+# Expose port 80 to allow Nginx to serve the app
+EXPOSE 80
+
+# Start Nginx in the foreground
+CMD ["nginx", "-g", "daemon off;"]
